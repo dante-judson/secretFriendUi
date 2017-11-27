@@ -1,0 +1,49 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="container-fluid" style="margin-top: 5%">
+  <div class="col-lg-4 offset-lg-4 col-sm-12">
+      <div class="card">
+          <img class="card-img-top" src="../../../assets/images/hardcodelogo.png" alt="Card image cap">
+          <div class="card-body">
+            <form #loginForm=ngForm (ngSubmit)="registrar(loginForm.value)">
+              <div class="form-group">
+                <label class="form-control-label">*Usuario</label>
+                <input type="text" placeholder="Usuário" name="username" class="form-control" [class.is-invalid]="nome.invalid && nome.touched" 
+                (blur)=checkUsernameAvailable(nome.value) required ngModel #nome="ngModel">
+                <div style="color: red" *ngIf="nome.hasError('required') && nome.touched" class="form-control-feedback">Usuário Obrigatório</div>
+                <div style="color: red" *ngIf="!nome.available && nome.dirty" class="form-control-feedback">{{usernameAvailable.msg}}</div>
+                <div style="color: green" *ngIf="nome.available && nome.dirty" class="form-control-feedback">{{usernameAvailable.msg}}</div>  
+              </div>
+              <div class="form-group">
+                <label class="form-control-label">*Email</label>
+                <input type="text" placeholder="Email" name="email" class="form-control" [class.is-invalid]="email.invalid && email.touched"
+                (blur)="checkEmailAvailable(email.value)" required email ngModel #email="ngModel">
+                <div style="color: red" *ngIf="email.hasError('required') && email.touched" class="form-control-feedback">Email Obrigatório</div>
+                <div style="color: red" *ngIf="email.hasError('email') && email.touched" class="form-control-feedback">Formato Inválido</div>
+                <div style="color: red" *ngIf="!emailAvailable.available && email.dirty" class="form-control-feedback">{{emailAvailable.msg}}</div>
+                <div style="color: green" *ngIf="emailAvailable.available && email.dirty" class="form-control-feedback">{{emailAvailable.msg}}</div>                                
+              </div>
+              <div class="form-group">
+                <label class="form-control-label">*Nome Completo</label>
+                <input type="text" placeholder="Nome Completo" name="nomeCompleto" class="form-control" [class.is-invalid]="nomeCompleto.invalid && nomeCompleto.touched" required ngModel #nomeCompleto="ngModel">
+                <div style="color: red" *ngIf="nomeCompleto.invalid && nomeCompleto.touched" class="form-control-feedback">*Nome Completo Obrigatório</div>
+              </div>
+              <div class="form-group">
+                  <label class="form-control-label">*Senha</label>
+                  <input type="password" placeholder="Senha" name="senha" class="form-control" [class.is-invalid]="senha.invalid && senha.touched"
+                  (keyup)="checkPassword(senha.value,repetirSenha.value)" required ngModel #senha="ngModel">
+                  <div style="color: red" *ngIf="senha.invalid && senha.touched">Senha Obrigatória</div>
+              </div>
+              <div class="form-group">
+                <label class="form-control-label">*Repetir Senha</label>
+                <input type="password" placeholder="Repetir Senha" name="repetirSenha" class="form-control" [class.is-invalid]="repetirSenha.invalid && repetirSenha.touched"
+                (keyup)="checkPassword(senha.value,repetirSenha.value)" required ngModel #repetirSenha="ngModel">
+                <div style="color: red" *ngIf="repetirSenha.invalid && repetirSenha.touched" class="form-control-feedback">Confirmação de senha obrigatória</div>
+                <div style="color: red" *ngIf="!passwordMatch && repetirSenha.dirty" class="form-control-feedback">Senhas não conferem</div>                
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" [disabled]="loginForm.invalid || !passwordMatch || !emailAvailable.available || !usernameAvailable.available">Criar conta</button>
+            </form>
+          </div>
+        </div>
+  </div>
+</div>
